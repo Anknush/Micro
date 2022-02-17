@@ -24,7 +24,7 @@ public class UserDao {
 	}
 	public UserModel saveUser(UserModel users) {
 		if(users.getId()==0) {
-			users.setId(+userCount);
+			users.setId(++userCount);
 		}
 		user.add(users);
 		return users;
@@ -38,6 +38,7 @@ public class UserDao {
 				return users;
 			}
 		}
+//		throw new UserNotFoundException("User id is not found");
 		return null;
 	}
 }
