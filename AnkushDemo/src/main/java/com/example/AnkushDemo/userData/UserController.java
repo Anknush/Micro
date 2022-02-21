@@ -12,6 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.*;
+
+import javax.validation.Valid;
 @RestController
 public class UserController {
 	@Autowired
@@ -36,7 +38,7 @@ public class UserController {
 	}
 	}
 	@PostMapping("/users")
-	public ResponseEntity<Object> createUser(@RequestBody UserModel user) {
+	public ResponseEntity<Object> createUser(@Valid @RequestBody UserModel user) {
 		UserModel savedUser=userdao.saveUser(user);
 		URI location=ServletUriComponentsBuilder
 				.fromCurrentRequest()

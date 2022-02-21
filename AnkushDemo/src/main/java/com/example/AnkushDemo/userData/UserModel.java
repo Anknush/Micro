@@ -2,10 +2,14 @@ package com.example.AnkushDemo.userData;
 import java.util.*;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 @Entity
 public class UserModel {
 	private int id;
+	@Size(min=2,message = "Name should we atleast 2 character")
 	private String name;
+	@Past(message = "Enter date should be in past")
 	private Date birthDate;
 	public UserModel(int id, String name, Date birthDate) {
 		super();

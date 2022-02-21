@@ -1,7 +1,9 @@
 package com.example.AnkushDemo.exception;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,4 +27,12 @@ extends ResponseEntityExceptionHandler {
 		ExceptionModel exceptions=new ExceptionModel(new Date(),ex.getMessage(),request.getDescription(false));
 		return new ResponseEntity(exceptions,HttpStatus.NOT_FOUND);
 	}
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(
+			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ExceptionModel exceptions=new ExceptionModel(new Date(),"Validations is not done properly",ex.getBindingResult().toString());
+
+		return new ResponseEntity(exceptions,HttpStatus.BAD_REQUEST);
+	}
+	
 }
