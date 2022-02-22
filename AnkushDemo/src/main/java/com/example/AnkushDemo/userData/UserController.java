@@ -1,6 +1,10 @@
 package com.example.AnkushDemo.userData;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +27,15 @@ public class UserController {
 		return userdao.findAll();
 	}
 	@GetMapping("/users/{id}")
-	public UserModel findById(@PathVariable int id) {
+	public EntityModel<UserModel> findById(@PathVariable int id) {
 		UserModel user=userdao.findOne(id);
 		if(user.getId()==0) {
 			throw new UserNotFoundException("User not found Id: "+id);
 		}
-		return user;
+		EntityModel<UserModel> reource=EntityModel.of(user);
+		WebMvcLinkBuilder linkTo=linkTo(methodOn(this.getClass()).allUsers());
+		reource.add(linkTo.withRel("all-users"));
+		return reource;
 	}
 	@DeleteMapping("/users/{id}")
 	public void deleteUsers(@PathVariable int id) {
