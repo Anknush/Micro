@@ -1,8 +1,9 @@
 package com.example.AnkushDemo.filtering;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value="name3")
+@JsonFilter("SomeFilter")
 public class FilterSome {
 	private String name1;
 	private String name2;
