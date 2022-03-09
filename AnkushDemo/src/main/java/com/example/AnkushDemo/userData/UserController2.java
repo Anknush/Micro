@@ -57,4 +57,13 @@ public class UserController2 {
 				.buildAndExpand(savedUser.getId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
+//	Post Controller
+	@GetMapping("/jpa/users/{id}/posts")
+	public List<Posts> allUsers(@PathVariable int id) {
+		Optional<UserModel> userOptional=userRepo.findById(id);
+		if(!userOptional.isPresent()) {
+			throw new UserNotFoundException("id- "+ id);
+		}
+		return userOptional.get().getPost();
+	}
 }

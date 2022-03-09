@@ -4,6 +4,7 @@ import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 @Entity
@@ -15,6 +16,8 @@ public class UserModel {
 	private String name;
 	@Past(message = "Enter date should be in past")
 	private Date birthDate;
+	@OneToMany(mappedBy = "user")
+	private List<Posts> post;
 	protected UserModel() {
 		
 	}
@@ -41,6 +44,13 @@ public class UserModel {
 	}
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+	
+	public List<Posts> getPost() {
+		return post;
+	}
+	public void setPost(List<Posts> post) {
+		this.post = post;
 	}
 	@Override
 	public String toString() {
