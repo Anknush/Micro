@@ -26,6 +26,8 @@ public class UserController2 {
 	UserDao userdao;
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	PostRepository postRepo;
 	@GetMapping("/jpa/users")
 	public List<UserModel> allUsers() {
 		return userRepo.findAll();
@@ -65,5 +67,20 @@ public class UserController2 {
 			throw new UserNotFoundException("id- "+ id);
 		}
 		return userOptional.get().getPost();
+	}
+	@PostMapping("/jpa/users/{id}/posts")
+	public ResponseEntity<Object> createPost(@PathVariable int id,@RequestBody Posts post) {
+		Optional<UserModel> optionalUser=userRepo.findById(id);
+		if(!optionalUser.isPresent()) {
+			throw new UserNotFoundException("id- "+id);
+		}
+		UserModel user=optionalUser.get();
+		post.setUser(user);
+		postRepo.save(post);
+		URI location=ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(post.getId()).toUri();
+		return ResponseEntity.created(location).build();
 	}
 }
